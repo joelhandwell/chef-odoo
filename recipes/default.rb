@@ -17,3 +17,9 @@
 # limitations under the License.
 
 python_runtime '2.7.12'
+
+ark 'odoo' do
+  path '/opt'
+  url 'https://nightly.odoo.com/10.0/nightly/src/odoo_10.0.latest.tar.gz'
+  action :put
+end

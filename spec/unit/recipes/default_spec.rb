@@ -29,5 +29,9 @@ describe 'odoo::default' do
     it 'install python 2.7.9' do
       expect(chef_run).to install_python_runtime '2.7.12'
     end
+
+    it 'downloads odoo' do
+      expect(chef_run).to put_ark('odoo').with(path: '/opt', url: 'https://nightly.odoo.com/10.0/nightly/src/odoo_10.0.latest.tar.gz')
+    end
   end
 end
