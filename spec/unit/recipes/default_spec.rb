@@ -26,8 +26,8 @@ describe 'odoo::default' do
       runner.converge(described_recipe)
     end
 
-    it 'converges successfully' do
-      expect { chef_run }.to_not raise_error
+    it 'install python 2.7.9' do
+      expect(chef_run).to install_python_runtime '2.7.12'
     end
   end
 end
