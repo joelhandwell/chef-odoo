@@ -1,6 +1,9 @@
 ---
 driver:
   name: vagrant
+  customize:
+    memory: <%= ENV['TEST_KITCHEN_VM_MEMORY'] || 2048 %>
+    cpus: <%= ENV['TEST_KITCHEN_VM_CPUS'] || 2 %>
 
 provisioner:
   name: chef_zero
