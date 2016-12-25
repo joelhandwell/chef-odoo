@@ -10,12 +10,6 @@ describe user('odoo') do
   its('group') { should eq 'odoo' }
 end
 
-describe file('/home/odoo/.cache/pip') do
-  it { should be_directory }
-  it { should be_owned_by 'odoo' }
-  it { should be_grouped_into 'odoo' }
-end
-
 describe file('/opt/odoo') do
   it { should be_directory }
   it { should be_owned_by 'odoo' }
@@ -27,8 +21,18 @@ describe file('/opt/odoo/requirements.txt') do
   its('content') { should include 'Jinja' }
 end
 
+%w[postgresql-server-dev-all libxml2-dev libxslt1-dev libevent-dev libsasl2-dev libldap2-dev].each do |name|
+  describe package(name) do
+    it { should be_installed }
+  end
+end
+
 describe command('python -V') do
   its('stderr') { should include 'Python 2.7.12' }
+end
+
+describe command('pip list') do
+  its('stdout') { should include 'Jinja' }
 end
 
 describe command('node -h')do

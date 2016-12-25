@@ -24,12 +24,6 @@ group 'odoo' do
   members ['odoo']
 end
 
-directory '/home/odoo/.cache/pip' do
-  owner 'odoo'
-  group 'odoo'
-  recursive true
-end
-
 ark 'odoo' do
   path '/opt'
   url 'https://nightly.odoo.com/10.0/nightly/src/odoo_10.0.latest.tar.gz'
@@ -38,10 +32,11 @@ ark 'odoo' do
   group 'odoo'
 end
 
-#pip_requirements '/opt/odoo/requirements.txt' do
-#  user 'odoo'
-#  group 'odoo'
-#end
+%w[postgresql-server-dev-all libxml2-dev libxslt1-dev libevent-dev libsasl2-dev libldap2-dev].each do |name|
+  package name
+end
+
+pip_requirements '/opt/odoo/requirements.txt'
 
 include_recipe 'nodejs::nodejs_from_binary'
 

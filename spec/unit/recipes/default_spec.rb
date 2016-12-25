@@ -26,17 +26,13 @@ describe 'odoo::default' do
       runner.converge(described_recipe)
     end
 
-    it 'install python 2.7.9' do
+    it 'install python' do
       expect(chef_run).to install_python_runtime '2.7.12'
     end
 
     it 'creates user odoo' do
       expect(chef_run).to create_user('odoo')
       expect(chef_run).to create_group('odoo').with(members: ['odoo'])
-    end
-
-    it 'creates pip cache dir' do
-      expect(chef_run).to create_directory('/home/odoo/.cache/pip').with(owner: 'odoo', group: 'odoo', recursive: true)
     end
 
     it 'downloads odoo' do
@@ -48,9 +44,15 @@ describe 'odoo::default' do
       )
     end
 
-    #it 'installs pip reqirement' do
-    #  expect(chef_run).to install_pip_requirements('/opt/odoo/requirements.txt').with(user: 'odoo', group: 'odoo')
-    #end
+    %w[postgresql-server-dev-all libxml2-dev libxslt1-dev libevent-dev libsasl2-dev libldap2-dev].each do |name|
+      it "installs odoo dependency package #{name}" do
+        expect(chef_run).to install_package(name)
+      end
+    end
+
+    it 'installs pip reqirement' do
+      expect(chef_run).to install_pip_requirements('/opt/odoo/requirements.txt')
+    end
 
     it 'install nodejs' do
       expect(chef_run).to include_recipe('nodejs::nodejs_from_binary')
