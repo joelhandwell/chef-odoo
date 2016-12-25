@@ -33,5 +33,19 @@ describe 'odoo::default' do
     it 'downloads odoo' do
       expect(chef_run).to put_ark('odoo').with(path: '/opt', url: 'https://nightly.odoo.com/10.0/nightly/src/odoo_10.0.latest.tar.gz')
     end
+
+    it 'install nodejs' do
+      expect(chef_run).to include_recipe('nodejs::nodejs_from_binary')
+    end
+
+    it 'installs yarn' do
+      expect(chef_run).to add_apt_repository('yarn').with(uri: 'https://dl.yarnpkg.com/debian/', distribution: 'stable', components: ['main'], key: 'https://dl.yarnpkg.com/debian/pubkey.gpg')
+      expect(chef_run).to install_package('yarn')
+    end
+
+    it 'installs less' do
+      expect(chef_run).to run_execute('yarn global add less')
+    end
+
   end
 end

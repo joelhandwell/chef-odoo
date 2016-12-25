@@ -23,3 +23,16 @@ ark 'odoo' do
   url 'https://nightly.odoo.com/10.0/nightly/src/odoo_10.0.latest.tar.gz'
   action :put
 end
+
+include_recipe 'nodejs::nodejs_from_binary'
+
+apt_repository 'yarn' do
+  uri 'https://dl.yarnpkg.com/debian/'
+  distribution 'stable'
+  components ['main']
+  key 'https://dl.yarnpkg.com/debian/pubkey.gpg'
+end
+
+package 'yarn'
+
+execute 'yarn global add less'
