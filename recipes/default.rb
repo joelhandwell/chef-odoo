@@ -18,11 +18,30 @@
 
 python_runtime '2.7.12'
 
+user 'odoo'
+
+group 'odoo' do
+  members ['odoo']
+end
+
+directory '/home/odoo/.cache/pip' do
+  owner 'odoo'
+  group 'odoo'
+  recursive true
+end
+
 ark 'odoo' do
   path '/opt'
   url 'https://nightly.odoo.com/10.0/nightly/src/odoo_10.0.latest.tar.gz'
   action :put
+  owner 'odoo'
+  group 'odoo'
 end
+
+#pip_requirements '/opt/odoo/requirements.txt' do
+#  user 'odoo'
+#  group 'odoo'
+#end
 
 include_recipe 'nodejs::nodejs_from_binary'
 
@@ -35,4 +54,6 @@ end
 
 package 'yarn'
 
-execute 'yarn global add less'
+execute 'yarn global add less --prefix /usr/local' do
+  creates  '/usr/local/bin/lessc'
+end

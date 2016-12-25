@@ -30,9 +30,27 @@ describe 'odoo::default' do
       expect(chef_run).to install_python_runtime '2.7.12'
     end
 
-    it 'downloads odoo' do
-      expect(chef_run).to put_ark('odoo').with(path: '/opt', url: 'https://nightly.odoo.com/10.0/nightly/src/odoo_10.0.latest.tar.gz')
+    it 'creates user odoo' do
+      expect(chef_run).to create_user('odoo')
+      expect(chef_run).to create_group('odoo').with(members: ['odoo'])
     end
+
+    it 'creates pip cache dir' do
+      expect(chef_run).to create_directory('/home/odoo/.cache/pip').with(owner: 'odoo', group: 'odoo', recursive: true)
+    end
+
+    it 'downloads odoo' do
+      expect(chef_run).to put_ark('odoo').with(
+        path: '/opt',
+        url: 'https://nightly.odoo.com/10.0/nightly/src/odoo_10.0.latest.tar.gz',
+        owner: 'odoo',
+        group: 'odoo'
+      )
+    end
+
+    #it 'installs pip reqirement' do
+    #  expect(chef_run).to install_pip_requirements('/opt/odoo/requirements.txt').with(user: 'odoo', group: 'odoo')
+    #end
 
     it 'install nodejs' do
       expect(chef_run).to include_recipe('nodejs::nodejs_from_binary')
@@ -44,8 +62,7 @@ describe 'odoo::default' do
     end
 
     it 'installs less' do
-      expect(chef_run).to run_execute('yarn global add less')
+      expect(chef_run).to run_execute('yarn global add less --prefix /usr/local')
     end
-
   end
 end

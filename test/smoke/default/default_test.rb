@@ -5,13 +5,30 @@
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/
 
-describe command('python -V') do
-  its('stderr') { should include 'Python 2.7.12' }
+describe user('odoo') do
+  it { should exist }
+  its('group') { should eq 'odoo' }
+end
+
+describe file('/home/odoo/.cache/pip') do
+  it { should be_directory }
+  it { should be_owned_by 'odoo' }
+  it { should be_grouped_into 'odoo' }
+end
+
+describe file('/opt/odoo') do
+  it { should be_directory }
+  it { should be_owned_by 'odoo' }
+  it { should be_grouped_into 'odoo' }
 end
 
 describe file('/opt/odoo/requirements.txt') do
   it { should exist }
   its('content') { should include 'Jinja' }
+end
+
+describe command('python -V') do
+  its('stderr') { should include 'Python 2.7.12' }
 end
 
 describe command('node -h')do

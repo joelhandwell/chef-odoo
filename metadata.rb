@@ -4,7 +4,7 @@ maintainer_email 'joelhandwell@gmail.com'
 license 'apachev2'
 description 'Installs/Configures odoo'
 long_description 'Installs/Configures odoo'
-version '0.1.0'
+version '0.1.1'
 
 # The `issues_url` points to the location where issues for this cookbook are
 # tracked.  A `View Issues` link will be displayed on this cookbook's page when
