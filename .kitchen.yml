@@ -26,3 +26,16 @@ suites:
       inspec_tests:
         - test/smoke/default
     attributes:
+  - name: database
+    run_list:
+      - recipe[odoo::database]
+    verifier:
+      inspec_tests:
+        - test/smoke/database
+    attributes: {
+      "postgresql": {
+        "password": {
+          "postgres": "rID0aUG05hE8cKDKSVU7"
+        }
+      }
+    }
