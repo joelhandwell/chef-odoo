@@ -30,11 +30,6 @@ describe 'odoo::default' do
       expect(chef_run).to install_python_runtime '2.7.12'
     end
 
-    it 'creates user odoo' do
-      expect(chef_run).to create_user('odoo')
-      expect(chef_run).to create_group('odoo').with(members: ['odoo'])
-    end
-
     it 'downloads odoo' do
       expect(chef_run).to put_ark('odoo').with(
         path: '/opt',

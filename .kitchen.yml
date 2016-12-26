@@ -21,16 +21,20 @@ platforms:
 suites:
   - name: default
     run_list:
+      - recipe[odoo::user]
       - recipe[odoo::default]
     verifier:
       inspec_tests:
+        - test/smoke/shared
         - test/smoke/default
     attributes:
   - name: database
     run_list:
+      - recipe[odoo::user]
       - recipe[odoo::database]
     verifier:
       inspec_tests:
+        - test/smoke/shared
         - test/smoke/database
     attributes: {
       "postgresql": {

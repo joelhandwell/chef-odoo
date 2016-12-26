@@ -5,11 +5,6 @@
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/
 
-describe user('odoo') do
-  it { should exist }
-  its('group') { should eq 'odoo' }
-end
-
 describe file('/opt/odoo') do
   it { should be_directory }
   it { should be_owned_by 'odoo' }

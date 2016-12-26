@@ -18,12 +18,6 @@
 
 python_runtime '2.7.12'
 
-user 'odoo'
-
-group 'odoo' do
-  members ['odoo']
-end
-
 ark 'odoo' do
   path '/opt'
   url 'https://nightly.odoo.com/10.0/nightly/src/odoo_10.0.latest.tar.gz'
