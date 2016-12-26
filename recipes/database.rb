@@ -17,8 +17,7 @@
 # limitations under the License.
 
 include_recipe 'postgresql::server'
-
-include_recipe 'database::postgresql'
+include_recipe 'postgresql::ruby'
 
 connection_info = {
   :host     => '127.0.0.1',
@@ -27,7 +26,29 @@ connection_info = {
   :password => node['postgresql']['password']['postgres']
 }
 
-postgresql_database 'odoo' do
+odoo_db = node['odoo']['postgresql']['database']
+odoo_user = node['odoo']['postgresql']['user']['name']
+
+postgresql_database odoo_db do
   connection connection_info
   action :create
+end
+
+postgresql_database_user 'create user for odoo' do
+  connection connection_info
+  username odoo_user
+  password   node['odoo']['postgresql']['user']['password']
+  action     :create
+end
+
+postgresql_database_user 'grant user for odoo' do
+  connection connection_info
+  username odoo_user
+  database_name odoo_db
+  schema_name 'public'
+  tables     [:all]
+  sequences  [:all]
+  functions  [:all]
+  privileges [:all]
+  action     [:grant, :grant_schema, :grant_table, :grant_sequence, :grant_function]
 end

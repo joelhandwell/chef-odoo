@@ -1,6 +1,6 @@
 #
 # Cookbook:: odoo
-# Recipe:: user
+# Attribute:: default
 #
 # Copyright:: 2016, Joel Handwell
 #
@@ -16,10 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-user 'odoo'
-
-group 'odoo' do
-  members ['odoo']
-end
-
-user node['odoo']['postgresql']['user']['name']
+default['odoo']['postgresql']['database'] = nil
+default['odoo']['postgresql']['user']['name'] = nil
+default['odoo']['postgresql']['user']['password'] = nil

@@ -15,8 +15,14 @@ describe service('postgresql') do
   it { should be_running }
 end
 
-sql = postgres_session('postgres', 'rID0aUG05hE8cKDKSVU7')
+admin = postgres_session('postgres', 'rID0aUG05hE8cKDKSVU7')
 
-describe sql.query('\l') do
-  its('output') { should include 'odoo' }
+describe admin.query('\l') do
+  its('output') { should include 'some_organization' }
+end
+
+odoo = postgres_session('some_organization', 'SwvXieH6o3RB8wyepr0X')
+
+describe odoo.query('\conninfo') do
+  its('output') { should include 'You are connected to database "some_organization" as user "some_organization"' }
 end
