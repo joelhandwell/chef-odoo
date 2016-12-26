@@ -21,8 +21,9 @@ require 'spec_helper'
 describe 'odoo::database' do
   context 'When all attributes are default, on an unspecified platform' do
     let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
-      runner.converge(described_recipe)
+      runner = ChefSpec::ServerRunner.new do |node|
+        node.normal['postgresql']['password']['postgres'] = 'HcCCLT7dbnISt8YlDgU3'
+      end.converge(described_recipe)
     end
 
     before do
@@ -31,6 +32,17 @@ describe 'odoo::database' do
 
     it 'install postgresql server' do
       expect(chef_run).to include_recipe('postgresql::server')
+    end
+
+    it 'creates database for odoo' do
+      expect(chef_run).to create_postgresql_database('odoo').with(
+        connection: {
+          :host     => '127.0.0.1',
+          :port     => 5432,
+          :username => 'postgres',
+          :password => 'HcCCLT7dbnISt8YlDgU3'
+        }
+      )
     end
   end
 end

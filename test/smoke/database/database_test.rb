@@ -14,3 +14,9 @@ describe service('postgresql') do
   it { should be_enabled }
   it { should be_running }
 end
+
+sql = postgres_session('postgres', 'rID0aUG05hE8cKDKSVU7')
+
+describe sql.query('\l') do
+  its('output') { should include 'odoo' }
+end

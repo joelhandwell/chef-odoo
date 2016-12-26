@@ -17,3 +17,17 @@
 # limitations under the License.
 
 include_recipe 'postgresql::server'
+
+include_recipe 'database::postgresql'
+
+connection_info = {
+  :host     => '127.0.0.1',
+  :port     => node['postgresql']['config']['port'],
+  :username => 'postgres',
+  :password => node['postgresql']['password']['postgres']
+}
+
+postgresql_database 'odoo' do
+  connection connection_info
+  action :create
+end
