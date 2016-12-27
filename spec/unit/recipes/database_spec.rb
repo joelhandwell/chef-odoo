@@ -21,7 +21,7 @@ require 'spec_helper'
 describe 'odoo::database' do
   context 'When all attributes are default, on an unspecified platform' do
     let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new do |node|
+      ChefSpec::ServerRunner.new do |node|
         node.normal['postgresql']['password']['postgres'] = 'HcCCLT7dbnISt8YlDgU3'
         node.normal['odoo']['postgresql']['database'] = 'some_organization'
         node.normal['odoo']['postgresql']['user']['name'] = 'some_organization'
