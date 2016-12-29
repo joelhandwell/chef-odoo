@@ -42,8 +42,10 @@ describe command('lessc -h') do
   its('stdout') { should include 'usage: lessc' }
 end
 
+server_address = attribute('db_server_address', default: '127.0.0.1')
+
 sql_command = <<-CMD
-sudo -H -u some_organization bash -c "psql -U some_organization -h 172.16.1.12 -w -c '\\l'"
+sudo -H -u some_organization bash -c "psql -U some_organization -h #{server_address} -w -c '\\l'"
 CMD
 
 describe command(sql_command) do

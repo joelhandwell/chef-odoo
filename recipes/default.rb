@@ -16,36 +16,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-python_runtime '2.7.12'
+node.default['odoo']['postgresql']['database'] = 'some_organization' if node['odoo']['postgresql']['database'] == nil
+node.default['odoo']['postgresql']['user_name'] = 'some_organization' if node['odoo']['postgresql']['user_name'] == nil
+node.default['odoo']['postgresql']['user_password'] = 'some_organization_password' if node['odoo']['postgresql']['user_password'] == nil
+node.default['odoo']['postgresql']['client_address'] = '127.0.0.1/32' if node['odoo']['postgresql']['client_address'] == nil
+node.default['odoo']['postgresql']['server_address'] = '127.0.0.1' if node['odoo']['postgresql']['server_address'] == nil
+node.default['postgresql']['password']['postgres'] = 'postgresql_admin_default_password' if node['postgresql']['password']['postgres'] == nil
 
-rq_txt = '/opt/odoo/requirements.txt'
-
-ark 'odoo' do
-  path '/opt'
-  url 'https://nightly.odoo.com/10.0/nightly/src/odoo_10.0.latest.tar.gz'
-  action :put
-  owner 'odoo'
-  group 'odoo'
-  creates rq_txt
-end
-
-%w[postgresql-server-dev-all libxml2-dev libxslt1-dev libevent-dev libsasl2-dev libldap2-dev].each do |name|
-  package name
-end
-
-pip_requirements rq_txt
-
-include_recipe 'nodejs::nodejs_from_binary'
-
-apt_repository 'yarn' do
-  uri 'https://dl.yarnpkg.com/debian/'
-  distribution 'stable'
-  components ['main']
-  key 'https://dl.yarnpkg.com/debian/pubkey.gpg'
-end
-
-package 'yarn'
-
-execute 'yarn global add less --prefix /usr/local' do
-  creates  '/usr/local/bin/lessc'
-end
+include_recipe 'odoo::user'
+include_recipe 'odoo::web'
+include_recipe 'odoo::database'

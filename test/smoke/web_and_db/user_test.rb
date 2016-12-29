@@ -14,9 +14,11 @@ describe user('some_organization') do
   it { should exist }
 end
 
+server_address = attribute('db_server_address', default: '127.0.0.1')
+
 describe file('/home/some_organization/.pgpass') do
   it { should be_owned_by 'some_organization' }
   it { should be_grouped_into 'some_organization' }
   its('mode') { should cmp '00600' }
-  its('content') { should eq '172.16.1.12:5432:some_organization:some_organization:SwvXieH6o3RB8wyepr0X' }
+  its('content') { should eq "#{server_address}:5432:some_organization:some_organization:some_organization_password" }
 end

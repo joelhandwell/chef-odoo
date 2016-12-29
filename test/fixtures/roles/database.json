@@ -5,7 +5,7 @@
   "default_attributes": {
     "postgresql": {
       "password": {
-        "postgres": "rID0aUG05hE8cKDKSVU7"
+        "postgres": "postgresql_admin_test_password"
       }
     }
   },

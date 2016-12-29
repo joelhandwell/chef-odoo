@@ -21,6 +21,14 @@ platforms:
 
 suites:
   - name: default
+    run_list:
+      - recipe[odoo]
+    verifier:
+      inspec_tests:
+        - test/smoke/web_and_db
+        - test/smoke/web
+        - test/smoke/database
+  - name: web
     driver:
       network:
         - ["private_network", {ip: "172.16.1.11"}]
@@ -31,6 +39,10 @@ suites:
       inspec_tests:
         - test/smoke/web_and_db
         - test/smoke/web
+      attributes:
+        db_admin_password: 'postgresql_admin_test_password'
+        db_client_address: '172.16.1.11'
+        db_server_address: '172.16.1.12'
   - name: database
     driver:
       network:
@@ -42,3 +54,7 @@ suites:
       inspec_tests:
         - test/smoke/web_and_db
         - test/smoke/database
+      attributes:
+        db_admin_password: 'postgresql_admin_test_password'
+        db_client_address: '172.16.1.11'
+        db_server_address: '172.16.1.12'

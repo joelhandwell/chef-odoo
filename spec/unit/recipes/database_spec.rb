@@ -28,7 +28,7 @@ describe 'odoo::database' do
         :host     => '127.0.0.1',
         :port     => 5432,
         :username => 'postgres',
-        :password => 'rID0aUG05hE8cKDKSVU7'
+        :password => 'postgresql_admin_test_password'
       }
     end
 
@@ -64,7 +64,7 @@ describe 'odoo::database' do
       expect(chef_run).to create_postgresql_database_user('create user for odoo').with(
         connection: connection_info,
         username: 'some_organization',
-        password: 'SwvXieH6o3RB8wyepr0X'
+        password: 'some_organization_password'
       )
     end
 

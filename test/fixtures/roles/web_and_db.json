@@ -7,7 +7,7 @@
       "postgresql": {
         "database": "some_organization",
         "user_name": "some_organization",
-        "user_password": "SwvXieH6o3RB8wyepr0X",
+        "user_password": "some_organization_password",
         "client_address": "172.16.1.11/32",
         "server_address": "172.16.1.12"
       }
