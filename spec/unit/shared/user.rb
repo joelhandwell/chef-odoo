@@ -1,8 +1,9 @@
 shared_examples 'user' do |server_address|
 
-  it 'creates unix user odoo' do
-    expect(chef_run).to create_user('odoo')
-    expect(chef_run).to create_group('odoo').with(members: ['odoo'])
+  %w(odoo some_organization).each do |user_name|
+    it "creates unix user #{user_name}" do
+      expect(chef_run).to create_user(user_name).with(home: "/home/#{user_name}", manage_home: true)
+    end
   end
 
   it 'creates unix user same as postgre sql user' do

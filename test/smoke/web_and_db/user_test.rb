@@ -5,13 +5,16 @@
 # The Inspec reference, with examples and extensive documentation, can be
 # found at http://inspec.io/docs/reference/resources/
 
-describe user('odoo') do
-  it { should exist }
-  its('group') { should eq 'odoo' }
-end
+%w(odoo some_organization).each do |user_name|
+  describe user(user_name) do
+    it { should exist }
+    its('group') { should eq user_name }
+    its('home') { should eq "/home/#{user_name}" }
+  end
 
-describe user('some_organization') do
-  it { should exist }
+  describe file("/home/#{user_name}") do
+    it { should exist }
+  end
 end
 
 server_address = attribute('db_server_address', default: '127.0.0.1')

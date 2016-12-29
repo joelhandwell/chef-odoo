@@ -16,10 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-user 'odoo'
-
-group 'odoo' do
-  members ['odoo']
+user 'odoo' do
+  home '/home/odoo'
+  manage_home true
 end
 
 user_name = node['odoo']['postgresql']['user_name']
