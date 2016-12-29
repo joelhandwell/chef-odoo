@@ -16,30 +16,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 require 'spec_helper'
+require_relative '../shared/user'
 
 describe 'odoo::user' do
   context 'When all attributes are default, on an unspecified platform' do
 
     let(:chef_run) { ChefSpec::SoloRunner.converge('role[web_and_db]') }
 
-    it 'creates unix user odoo' do
-      expect(chef_run).to create_user('odoo')
-      expect(chef_run).to create_group('odoo').with(members: ['odoo'])
-    end
+    server_address = '172.16.1.12'
 
-    it 'creates unix user same as postgre sql user' do
-      expect(chef_run).to create_user('some_organization').with(home: '/home/some_organization', manage_home: true)
-    end
+    include_examples 'user', server_address
 
-    it 'creates password file for postgre sql user' do
-      expect(chef_run).to create_file('/home/some_organization/.pgpass').with(
-        content: '172.16.1.12:5432:some_organization:some_organization:some_organization_password',
-        owner: 'some_organization',
-        group: 'some_organization',
-        mode: 00600
-      )
-    end
   end
 end
