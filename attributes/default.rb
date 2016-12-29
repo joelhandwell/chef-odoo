@@ -17,5 +17,7 @@
 # limitations under the License.
 
 default['odoo']['postgresql']['database'] = nil
-default['odoo']['postgresql']['user']['name'] = nil
-default['odoo']['postgresql']['user']['password'] = nil
+default['odoo']['postgresql']['user_name'] = nil
+default['odoo']['postgresql']['user_password'] = nil
+default['odoo']['postgresql']['client_address'] = nil
+default['odoo']['postgresql']['server_address'] = nil

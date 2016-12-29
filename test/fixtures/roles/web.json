@@ -1,0 +1,11 @@
+{
+  "name": "web",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+  },
+  "run_list": [
+    "recipe[odoo::default]",
+    "recipe[postgresql::client]"
+  ]
+}

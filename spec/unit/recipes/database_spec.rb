@@ -19,22 +19,16 @@
 require 'spec_helper'
 
 describe 'odoo::database' do
-  context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
-      ChefSpec::ServerRunner.new do |node|
-        node.normal['postgresql']['password']['postgres'] = 'HcCCLT7dbnISt8YlDgU3'
-        node.normal['odoo']['postgresql']['database'] = 'some_organization'
-        node.normal['odoo']['postgresql']['user']['name'] = 'some_organization'
-        node.normal['odoo']['postgresql']['user']['password'] = 'SwvXieH6o3RB8wyepr0X'
-      end.converge(described_recipe)
-    end
+  context 'When all attributes are default, on ubuntu 16' do
+
+    let(:chef_run) { ChefSpec::SoloRunner.converge('role[web_and_db]', 'role[database]') }
 
     let(:connection_info) do
       {
         :host     => '127.0.0.1',
         :port     => 5432,
         :username => 'postgres',
-        :password => 'HcCCLT7dbnISt8YlDgU3'
+        :password => 'rID0aUG05hE8cKDKSVU7'
       }
     end
 
@@ -44,6 +38,18 @@ describe 'odoo::database' do
 
     it 'installs postgresql server' do
       expect(chef_run).to include_recipe('postgresql::server')
+    end
+
+    it 'configures postgresql' do
+      expect(chef_run).to render_file('/etc/postgresql/9.5/main/postgresql.conf').with_content{ |content|
+        expect(content).to match /listen_addresses\s*=\s*'localhost,\s172.16.1.2'/
+      }
+    end
+
+    it 'configures postgresql authentication file for odoo db user' do
+      expect(chef_run).to render_file('/etc/postgresql/9.5/main/pg_hba.conf').with_content { |content|
+        expect(content).to match /host\s*some_organization\s*some_organization\s*172\.16\.1\.1\/32\s*md5/
+      }
     end
 
     it 'loads pg gem to enable database cookbook' do

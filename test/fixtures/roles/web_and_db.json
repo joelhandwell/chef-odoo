@@ -1,0 +1,19 @@
+{
+  "name": "web_and_db",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "odoo": {
+      "postgresql": {
+        "database": "some_organization",
+        "user_name": "some_organization",
+        "user_password": "SwvXieH6o3RB8wyepr0X",
+        "client_address": "172.16.1.1/32",
+        "server_address": "172.16.1.2"
+      }
+    }
+  },
+  "run_list": [
+    "recipe[odoo::user]"
+  ]
+}

@@ -22,4 +22,29 @@ group 'odoo' do
   members ['odoo']
 end
 
-user node['odoo']['postgresql']['user']['name']
+user_name = node['odoo']['postgresql']['user_name']
+
+user user_name do
+  home "/home/#{user_name}"
+  manage_home true
+end
+
+# cretes .pgpass with format hostname:port:database:username:password
+# see https://www.postgresql.org/docs/current/static/libpq-pgpass.html
+
+pgpass = node['odoo']['postgresql']['server_address']
+pgpass += ':'
+pgpass += node['postgresql']['config']['port'].to_s
+pgpass += ':'
+pgpass += user_name
+pgpass += ':'
+pgpass += user_name
+pgpass += ':'
+pgpass += node['odoo']['postgresql']['user_password']
+
+file "/home/#{user_name}/.pgpass" do
+  content pgpass
+  owner user_name
+  group user_name
+  mode 00600
+end

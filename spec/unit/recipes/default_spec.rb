@@ -21,10 +21,8 @@ require 'spec_helper'
 
 describe 'odoo::default' do
   context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
-      runner.converge(described_recipe)
-    end
+
+    let(:chef_run) { ChefSpec::SoloRunner.converge('role[web_and_db]', 'role[web]') }
 
     it 'install python' do
       expect(chef_run).to install_python_runtime '2.7.12'

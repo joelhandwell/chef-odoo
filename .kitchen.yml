@@ -7,6 +7,7 @@ driver:
 
 provisioner:
   name: chef_zero
+  roles_path: test/fixtures/roles
   # You may wish to disable always updating cookbooks in CI or other testing environments.
   # For example:
   #   always_update_cookbooks: <%= !ENV['CI'] %>
@@ -20,35 +21,24 @@ platforms:
 
 suites:
   - name: default
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.1.1"}]
     run_list:
-      - recipe[odoo::user]
-      - recipe[odoo::default]
+      - role[web_and_db]
+      - role[web]
     verifier:
       inspec_tests:
-        - test/smoke/shared
-        - test/smoke/default
-    attributes:
+        - test/smoke/web_and_db
+        - test/smoke/web
   - name: database
+    driver:
+      network:
+        - ["private_network", {ip: "172.16.1.2"}]
     run_list:
-      - recipe[odoo::user]
-      - recipe[odoo::database]
+      - role[web_and_db]
+      - role[database]
     verifier:
       inspec_tests:
-        - test/smoke/shared
+        - test/smoke/web_and_db
         - test/smoke/database
-    attributes: {
-      "postgresql": {
-        "password": {
-          "postgres": "rID0aUG05hE8cKDKSVU7"
-        }
-      },
-      "odoo": {
-        "postgresql": {
-          "database": "some_organization",
-          "user": {
-            "name": "some_organization",
-            "password": "SwvXieH6o3RB8wyepr0X"
-          }
-        }
-      }
-    }

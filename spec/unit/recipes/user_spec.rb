@@ -21,14 +21,25 @@ require 'spec_helper'
 
 describe 'odoo::user' do
   context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
-      runner.converge(described_recipe)
-    end
 
-    it 'creates user odoo' do
+    let(:chef_run) { ChefSpec::SoloRunner.converge('role[web_and_db]') }
+
+    it 'creates unix user odoo' do
       expect(chef_run).to create_user('odoo')
       expect(chef_run).to create_group('odoo').with(members: ['odoo'])
+    end
+
+    it 'creates unix user same as postgre sql user' do
+      expect(chef_run).to create_user('some_organization').with(home: '/home/some_organization', manage_home: true)
+    end
+
+    it 'creates password file for postgre sql user' do
+      expect(chef_run).to create_file('/home/some_organization/.pgpass').with(
+        content: '172.16.1.2:5432:some_organization:some_organization:SwvXieH6o3RB8wyepr0X',
+        owner: 'some_organization',
+        group: 'some_organization',
+        mode: 00600
+      )
     end
   end
 end

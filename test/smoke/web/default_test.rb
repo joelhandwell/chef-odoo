@@ -41,3 +41,11 @@ end
 describe command('lessc -h') do
   its('stdout') { should include 'usage: lessc' }
 end
+
+sql_command = <<-CMD
+sudo -H -u some_organization bash -c "psql -U some_organization -h 172.16.1.2 -w -c '\\l'"
+CMD
+
+describe command(sql_command) do
+  its('stdout') { should include 'some_organization' }
+end
