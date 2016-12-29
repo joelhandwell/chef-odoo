@@ -28,9 +28,9 @@ describe odoo.query('\l') do
 end
 
 describe file('/etc/postgresql/9.5/main/postgresql.conf') do
-  its('content') { should match /listen_addresses\s*=\s*'localhost,\s172.16.1.2'/ }
+  its('content') { should match /listen_addresses\s*=\s*'localhost,\s172.16.1.12'/ }
 end
 
 describe file('/etc/postgresql/9.5/main/pg_hba.conf') do
-  its('content') { should match /host\s*some_organization\s*some_organization\s*172\.16\.1\.1\/32\s*md5/ }
+  its('content') { should match /host\s*some_organization\s*some_organization\s*172\.16\.1\.11\/32\s*md5/ }
 end

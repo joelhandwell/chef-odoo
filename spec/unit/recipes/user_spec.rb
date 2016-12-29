@@ -35,7 +35,7 @@ describe 'odoo::user' do
 
     it 'creates password file for postgre sql user' do
       expect(chef_run).to create_file('/home/some_organization/.pgpass').with(
-        content: '172.16.1.2:5432:some_organization:some_organization:SwvXieH6o3RB8wyepr0X',
+        content: '172.16.1.12:5432:some_organization:some_organization:SwvXieH6o3RB8wyepr0X',
         owner: 'some_organization',
         group: 'some_organization',
         mode: 00600

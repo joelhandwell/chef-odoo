@@ -23,7 +23,7 @@ suites:
   - name: default
     driver:
       network:
-        - ["private_network", {ip: "172.16.1.1"}]
+        - ["private_network", {ip: "172.16.1.11"}]
     run_list:
       - role[web_and_db]
       - role[web]
@@ -34,7 +34,7 @@ suites:
   - name: database
     driver:
       network:
-        - ["private_network", {ip: "172.16.1.2"}]
+        - ["private_network", {ip: "172.16.1.12"}]
     run_list:
       - role[web_and_db]
       - role[database]

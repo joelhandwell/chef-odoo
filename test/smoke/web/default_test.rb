@@ -43,7 +43,7 @@ describe command('lessc -h') do
 end
 
 sql_command = <<-CMD
-sudo -H -u some_organization bash -c "psql -U some_organization -h 172.16.1.2 -w -c '\\l'"
+sudo -H -u some_organization bash -c "psql -U some_organization -h 172.16.1.12 -w -c '\\l'"
 CMD
 
 describe command(sql_command) do

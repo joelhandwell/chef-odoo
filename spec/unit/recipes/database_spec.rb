@@ -42,13 +42,13 @@ describe 'odoo::database' do
 
     it 'configures postgresql' do
       expect(chef_run).to render_file('/etc/postgresql/9.5/main/postgresql.conf').with_content{ |content|
-        expect(content).to match /listen_addresses\s*=\s*'localhost,\s172.16.1.2'/
+        expect(content).to match /listen_addresses\s*=\s*'localhost,\s172.16.1.12'/
       }
     end
 
     it 'configures postgresql authentication file for odoo db user' do
       expect(chef_run).to render_file('/etc/postgresql/9.5/main/pg_hba.conf').with_content { |content|
-        expect(content).to match /host\s*some_organization\s*some_organization\s*172\.16\.1\.1\/32\s*md5/
+        expect(content).to match /host\s*some_organization\s*some_organization\s*172\.16\.1\.11\/32\s*md5/
       }
     end
 
