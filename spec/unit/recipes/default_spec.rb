@@ -17,11 +17,10 @@
 # limitations under the License.
 
 require 'spec_helper'
-require_relative '../shared/database'
-require_relative '../shared/user'
+Dir[File.expand_path('../shared/*.rb', File.dirname(__FILE__))].each {|file| require file }
 
 describe 'odoo::default' do
-  context 'When all attributes are default, on ubuntu 16' do
+  context 'When all attributes are default intend to install web and db in the same machine, on ubuntu 16' do
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new
       runner.converge(described_recipe)
@@ -36,38 +35,21 @@ describe 'odoo::default' do
       }
     end
 
-    client_address = '127.0.0.1'
-    server_address = '127.0.0.1'
-
     before do
       stub_command('ls /var/lib/postgresql/9.5/main/recovery.conf').and_return(false)
     end
 
-    describe 'user recipe' do
-
-      it 'includes user recipe' do
-        expect(chef_run).to include_recipe('odoo::user')
-      end
-
-      include_examples 'user', server_address
-
-    end
-
-    describe 'web recipe' do
-
-      it 'includes web recipe' do
-        expect(chef_run).to include_recipe('odoo::web')
+    %w(user web database).each do |recipe_name|
+      it "includes #{recipe_name} recipe" do
+        expect(chef_run).to include_recipe("odoo::#{recipe_name}")
       end
     end
 
-    describe 'database recipe' do
+    client_address = '127.0.0.1'
+    server_address = '127.0.0.1'
 
-      it 'includes database recipe' do
-        expect(chef_run).to include_recipe('odoo::database')
-      end
-
-      include_examples 'database', client_address, server_address
-
-    end
+    include_examples 'postgres_user', server_address
+    include_examples 'odoo_config', server_address
+    include_examples 'postgres_config', client_address, server_address
   end
 end
