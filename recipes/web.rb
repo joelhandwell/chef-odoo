@@ -16,6 +16,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_recipe 'nodejs::nodejs_from_binary'
+
+apt_repository 'yarn' do
+  uri 'https://dl.yarnpkg.com/debian/'
+  distribution 'stable'
+  components ['main']
+  key 'https://dl.yarnpkg.com/debian/pubkey.gpg'
+end
+
+package 'yarn'
+
+execute 'yarn global add less --prefix /usr/local' do
+  creates  '/usr/local/bin/lessc'
+end
+
 python_runtime '2.7.12'
 
 rq_txt = '/opt/odoo/requirements.txt'
@@ -34,18 +49,3 @@ end
 end
 
 pip_requirements rq_txt
-
-include_recipe 'nodejs::nodejs_from_binary'
-
-apt_repository 'yarn' do
-  uri 'https://dl.yarnpkg.com/debian/'
-  distribution 'stable'
-  components ['main']
-  key 'https://dl.yarnpkg.com/debian/pubkey.gpg'
-end
-
-package 'yarn'
-
-execute 'yarn global add less --prefix /usr/local' do
-  creates  '/usr/local/bin/lessc'
-end

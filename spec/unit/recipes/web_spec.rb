@@ -27,6 +27,19 @@ describe 'odoo::web' do
       stub_command('ls /var/lib/postgresql/9.5/main/recovery.conf').and_return(false)
     end
 
+    it 'install nodejs' do
+      expect(chef_run).to include_recipe('nodejs::nodejs_from_binary')
+    end
+
+    it 'installs yarn' do
+      expect(chef_run).to add_apt_repository('yarn').with(uri: 'https://dl.yarnpkg.com/debian/', distribution: 'stable', components: ['main'], key: 'https://dl.yarnpkg.com/debian/pubkey.gpg')
+      expect(chef_run).to install_package('yarn')
+    end
+
+    it 'installs less' do
+      expect(chef_run).to run_execute('yarn global add less --prefix /usr/local')
+    end
+
     it 'install python' do
       expect(chef_run).to install_python_runtime '2.7.12'
     end
@@ -48,19 +61,6 @@ describe 'odoo::web' do
 
     it 'installs pip reqirement' do
       expect(chef_run).to install_pip_requirements('/opt/odoo/requirements.txt')
-    end
-
-    it 'install nodejs' do
-      expect(chef_run).to include_recipe('nodejs::nodejs_from_binary')
-    end
-
-    it 'installs yarn' do
-      expect(chef_run).to add_apt_repository('yarn').with(uri: 'https://dl.yarnpkg.com/debian/', distribution: 'stable', components: ['main'], key: 'https://dl.yarnpkg.com/debian/pubkey.gpg')
-      expect(chef_run).to install_package('yarn')
-    end
-
-    it 'installs less' do
-      expect(chef_run).to run_execute('yarn global add less --prefix /usr/local')
     end
   end
 end
