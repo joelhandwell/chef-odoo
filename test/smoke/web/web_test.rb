@@ -51,3 +51,34 @@ CMD
 describe command(sql_command) do
   its('stdout') { should include 'some_organization' }
 end
+
+describe file('/usr/local/bin/odoo') do
+  it { should exist }
+  it { should be_executable }
+end
+
+describe file('/etc/odoo/odoo.conf') do
+  it { should exist }
+  its('content') { should include "db_host = #{server_address}" }
+  its('content') { should include 'db_port = 5432' }
+  its('content') { should include 'db_user = some_organization' }
+  its('content') { should include 'db_password = some_organization_password' }
+  its('content') { should include 'addons_path = /usr/lib/python2.7/dist-packages/odoo/addons' }
+end
+
+describe file('/var/log/odoo') do
+  it { should be_directory }
+  it { should be_owned_by 'odoo' }
+  it { should be_grouped_into 'odoo' }
+end
+
+describe file('/etc/systemd/system/odoo.service') do
+  it { should exist }
+  its('mode') { should cmp '00644' }
+  its('content') { should include 'ExecStart=/usr/local/bin/odoo --config /etc/odoo/odoo.conf --logfile /var/log/odoo/odoo-server.log' }
+end
+
+describe service('odoo') do
+  it { should be_enabled }
+  it { should be_running }
+end

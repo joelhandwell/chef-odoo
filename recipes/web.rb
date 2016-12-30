@@ -49,3 +49,63 @@ end
 end
 
 pip_requirements rq_txt
+
+bin_file = '/usr/local/bin/odoo'
+
+execute 'python setup.py install' do
+  cwd '/opt/odoo'
+  creates bin_file
+end
+
+conf_path = '/etc/odoo'
+conf_file_name = 'odoo.conf'
+
+directory conf_path
+
+addon_path = '/usr/lib/python2.7/dist-packages/odoo/addons'
+
+file "#{conf_path}/#{conf_file_name}" do
+  content <<-CONF
+[options]
+; This is the password that allows database operations:
+; admin_passwd = admin
+db_host = #{node['odoo']['postgresql']['server_address']}
+db_port = #{node['postgresql']['config']['port'].to_s}
+db_user = #{node['odoo']['postgresql']['user_name']}
+db_password = #{node['odoo']['postgresql']['user_password']}
+addons_path = #{addon_path}
+CONF
+  owner 'odoo'
+  group 'odoo'
+  mode 00640
+end
+
+log_path = '/var/log/odoo'
+
+directory log_path do
+  owner 'odoo'
+  group 'odoo'
+end
+
+systemd_path = '/etc/systemd/system'
+
+directory systemd_path
+
+file "#{systemd_path}/odoo.service" do
+  content <<-SYSTEMD
+[Unit]
+Description=Odoo Open Source ERP and CRM
+After=network.target
+
+[Service]
+Type=simple
+User=odoo
+Group=odoo
+ExecStart=#{bin_file} --config #{conf_path}/#{conf_file_name} --logfile #{log_path}/odoo-server.log
+SYSTEMD
+  mode 00644
+end
+
+service 'odoo' do
+  action [ :enable, :start ]
+end

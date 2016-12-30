@@ -17,6 +17,7 @@
 # limitations under the License.
 
 require 'spec_helper'
+require_relative '../shared/odoo_config'
 
 describe 'odoo::web' do
   context 'When running role[web_and_db] and role[web], on ubuntu 16' do
@@ -61,6 +62,27 @@ describe 'odoo::web' do
 
     it 'installs pip reqirement' do
       expect(chef_run).to install_pip_requirements('/opt/odoo/requirements.txt')
+    end
+
+    it 'installs odoo' do
+      expect(chef_run).to run_execute('python setup.py install').with(cwd: '/opt/odoo')
+    end
+
+    server_address = '172.16.1.12'
+    include_examples 'odoo_config', server_address
+
+    it 'creates odoo log directory' do
+      expect(chef_run).to create_directory('/var/log/odoo').with(owner: 'odoo', group: 'odoo')
+    end
+
+    it 'creates odoo service config file' do
+      expect(chef_run).to create_directory('/etc/systemd/system')
+      expect(chef_run).to render_file('/etc/systemd/system/odoo.service').with_content('ExecStart=/usr/local/bin/odoo --config /etc/odoo/odoo.conf --logfile /var/log/odoo/odoo-server.log')
+    end
+
+    it 'enable and start servcie odoo' do
+      expect(chef_run).to enable_service('odoo')
+      expect(chef_run).to start_service('odoo')
     end
   end
 end
