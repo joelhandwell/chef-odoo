@@ -52,6 +52,11 @@ describe command(sql_command) do
   its('stdout') { should include 'some_organization' }
 end
 
+describe file('/usr/lib/python2.7/dist-packages/odoo/addons') do
+  it { should exist }
+  it { should be_directory }
+end
+
 describe file('/usr/local/bin/odoo') do
   it { should exist }
   it { should be_executable }

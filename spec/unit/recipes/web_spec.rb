@@ -64,6 +64,10 @@ describe 'odoo::web' do
       expect(chef_run).to install_pip_requirements('/opt/odoo/requirements.txt')
     end
 
+    it 'creates odoo addon directory' do
+      expect(chef_run).to create_directory('/usr/lib/python2.7/dist-packages/odoo/addons').with_recursive(true)
+    end
+
     it 'installs odoo' do
       expect(chef_run).to run_execute('python setup.py install').with(cwd: '/opt/odoo')
     end

@@ -50,6 +50,12 @@ end
 
 pip_requirements rq_txt
 
+addon_path = '/usr/lib/python2.7/dist-packages/odoo/addons'
+
+directory addon_path do
+  recursive true
+end
+
 bin_file = '/usr/local/bin/odoo'
 
 execute 'python setup.py install' do
@@ -61,8 +67,6 @@ conf_path = '/etc/odoo'
 conf_file_name = 'odoo.conf'
 
 directory conf_path
-
-addon_path = '/usr/lib/python2.7/dist-packages/odoo/addons'
 
 file "#{conf_path}/#{conf_file_name}" do
   content <<-CONF
