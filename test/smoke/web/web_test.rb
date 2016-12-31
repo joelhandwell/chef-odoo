@@ -87,3 +87,7 @@ describe service('odoo') do
   it { should be_enabled }
   it { should be_running }
 end
+
+describe command("curl -I http://#{server_address}:8069/web/database/selector") do
+  its('stdout') { should include '200 OK' }
+end
