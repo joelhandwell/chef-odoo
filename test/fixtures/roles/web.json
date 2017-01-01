@@ -5,7 +5,7 @@
   "default_attributes": {
   },
   "run_list": [
-    "recipe[odoo::default]",
+    "recipe[odoo::web]",
     "recipe[postgresql::client]"
   ]
 }
