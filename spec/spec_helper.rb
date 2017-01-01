@@ -1,5 +1,7 @@
 require 'chefspec'
 require 'chefspec/berkshelf'
+require 'coveralls'
+Coveralls.wear!
 
 RSpec.configure do |config|
   config.role_path = 'test/fixtures/roles'
