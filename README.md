@@ -1,5 +1,7 @@
 # Odoo Cookbook
 
+[![Build Status](https://travis-ci.org/gospelandit/chef-odoo.svg?branch=master)](https://travis-ci.org/gospelandit/chef-odoo)
+
 Installs and configures Odoo 10.0 from nightly source as a systemd service
 
 ## Supports:
