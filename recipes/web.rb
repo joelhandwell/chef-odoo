@@ -50,9 +50,7 @@ end
 
 pip_requirements rq_txt
 
-addon_path = '/usr/lib/python2.7/dist-packages/odoo/addons'
-
-directory addon_path do
+directory node['odoo']['config']['addon_path'] do
   recursive true
 end
 
@@ -68,17 +66,8 @@ conf_file_name = 'odoo.conf'
 
 directory conf_path
 
-file "#{conf_path}/#{conf_file_name}" do
-  content <<-CONF
-[options]
-; This is the password that allows database operations:
-; admin_passwd = admin
-db_host = #{node['odoo']['postgresql']['server_address']}
-db_port = #{node['postgresql']['config']['port'].to_s}
-db_user = #{node['odoo']['postgresql']['user_name']}
-db_password = #{node['odoo']['postgresql']['user_password']}
-addons_path = #{addon_path}
-CONF
+template "#{conf_path}/#{conf_file_name}" do
+  source 'odoo.conf.erb'
   owner 'odoo'
   group 'odoo'
   mode 00640

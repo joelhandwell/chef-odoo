@@ -21,3 +21,5 @@ default['odoo']['postgresql']['user_name'] = nil
 default['odoo']['postgresql']['user_password'] = nil
 default['odoo']['postgresql']['client_address'] = nil
 default['odoo']['postgresql']['server_address'] = nil
+
+default['odoo']['config']['addon_path'] = '/usr/lib/python2.7/dist-packages/odoo/addons'
