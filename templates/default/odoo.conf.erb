@@ -1,7 +1,9 @@
 [options]
 ; This is the password that allows database operations:
 ; admin_passwd = admin
+
 db_host     = <%= node['odoo']['postgresql']['server_address'] %>
+db_name     = <%= node['odoo']['postgresql']['database'] %>
 db_port     = <%= node['postgresql']['config']['port'].to_s %>
 db_user     = <%= node['odoo']['postgresql']['user_name'] %>
 db_password = <%= node['odoo']['postgresql']['user_password'] %>

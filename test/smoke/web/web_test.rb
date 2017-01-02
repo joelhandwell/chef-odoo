@@ -64,9 +64,10 @@ end
 
 describe file('/etc/odoo/odoo.conf') do
   it { should exist }
-  its('content') { should include "db_host = #{server_address}" }
-  its('content') { should include 'db_port = 5432' }
-  its('content') { should include 'db_user = some_organization' }
+  its('content') { should include "db_host     = #{server_address}" }
+  its('content') { should include 'db_name     = some_organization' }
+  its('content') { should include 'db_port     = 5432' }
+  its('content') { should include 'db_user     = some_organization' }
   its('content') { should include 'db_password = some_organization_password' }
   its('content') { should include 'addons_path = /usr/lib/python2.7/dist-packages/odoo/addons' }
 end
