@@ -24,5 +24,5 @@ node.default['odoo']['postgresql']['server_address'] = '127.0.0.1' if node['odoo
 node.default['postgresql']['password']['postgres'] = 'postgresql_admin_default_password' if node['postgresql']['password']['postgres'] == nil
 
 include_recipe 'odoo::user'
-include_recipe 'odoo::web'
 include_recipe 'odoo::database'
+include_recipe 'odoo::web'
