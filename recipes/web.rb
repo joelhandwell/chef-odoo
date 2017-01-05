@@ -42,6 +42,20 @@ ark 'odoo' do
   owner 'odoo'
   group 'odoo'
   creates rq_txt
+  only_if { node['odoo']['install_method'] == 'nightly' }
+end
+
+git 'odoo' do
+  destination '/opt/odoo'
+  repository 'https://github.com/odoo/odoo.git'
+  revision '10.0'
+  depth 1
+  only_if { node['odoo']['install_method'] == 'git' }
+end
+
+execute 'chown -R odoo:odoo /opt/odoo' do
+  only_if { node['odoo']['install_method'] == 'git' }
+  not_if "stat -c \"%U %G\" #{rq_txt} | grep 'odoo odoo'"
 end
 
 %w[postgresql-server-dev-all libxml2-dev libxslt1-dev libevent-dev libsasl2-dev libldap2-dev].each do |name|

@@ -26,6 +26,11 @@ suites:
         - ["private_network", {ip: "172.16.1.10"}]
     run_list:
       - recipe[odoo]
+    attributes: {
+      "odoo": {
+        "install_method": "git"
+      }
+    }
     verifier:
       inspec_tests:
         - test/smoke/web_and_db
