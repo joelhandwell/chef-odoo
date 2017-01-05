@@ -54,6 +54,14 @@ describe 'odoo::web' do
       )
     end
 
+    it 'do not downloads odoo via git' do
+      expect(chef_run).to_not sync_git('odoo').with(
+        destination: '/opt/odoo',
+        revision: '10.0',
+        depth: 1
+      )
+    end
+
     %w[postgresql-server-dev-all libxml2-dev libxslt1-dev libevent-dev libsasl2-dev libldap2-dev].each do |name|
       it "installs odoo dependency package #{name}" do
         expect(chef_run).to install_package(name)
@@ -87,6 +95,38 @@ describe 'odoo::web' do
     it 'enable and start servcie odoo' do
       expect(chef_run).to enable_service('odoo')
       expect(chef_run).to start_service('odoo')
+    end
+  end
+
+  context 'When running role[web_and_db] and role[web] with install method git, on ubuntu 16' do
+
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new do |node|
+        node.normal['odoo']['install_method'] = 'git'
+      end.converge('role[web_and_db]', 'role[web]')
+    end
+
+    before do
+      stub_command("stat -c \"%U %G\" /opt/odoo/requirements.txt | grep 'odoo odoo'").and_return(false)
+    end
+
+    it 'do not run ark resource' do
+      expect(chef_run).to_not put_ark('odoo').with(
+        path: '/opt',
+        url: 'https://nightly.odoo.com/10.0/nightly/src/odoo_10.0.latest.tar.gz',
+        owner: 'odoo',
+        group: 'odoo'
+      )
+    end
+
+    it 'downloads odoo via git' do
+      expect(chef_run).to sync_git('odoo').with(
+        destination: '/opt/odoo',
+        repository: 'https://github.com/odoo/odoo.git',
+        revision: '10.0',
+        depth: 1
+      )
+      expect(chef_run).to run_execute('chown -R odoo:odoo /opt/odoo')
     end
   end
 end
