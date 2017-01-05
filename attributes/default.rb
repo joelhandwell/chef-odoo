@@ -23,3 +23,4 @@ default['odoo']['postgresql']['client_address'] = nil
 default['odoo']['postgresql']['server_address'] = nil
 
 default['odoo']['config']['addon_path'] = '/usr/lib/python2.7/dist-packages/odoo/addons'
+default['odoo']['install_method'] = 'nightly' # or can be git
