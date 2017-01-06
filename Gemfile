@@ -9,8 +9,8 @@ gem 'rake'
 gem 'coveralls', require: false
 
 group :integration do
-  gem 'serverspec'
   gem 'kitchen-vagrant'
   gem 'vagrant-wrapper'
   gem 'test-kitchen'
+  gem 'kitchen-inspec'
 end
